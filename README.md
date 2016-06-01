@@ -17,7 +17,7 @@ tar xvfz solr-6.0.1.tgz
 ```
 ./solr start
 ```
-如果使用域名访问
+如果使用域名访问(-p表示端口，如无80端口，可以使用nginx代理，-h表示主机名，也就是我们说的域名)
 ```
 ./solr start -p 80 -h www.yanxiaowei.com
 ```
