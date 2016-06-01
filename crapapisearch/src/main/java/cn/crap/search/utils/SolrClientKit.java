@@ -8,11 +8,11 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 
 /**
@@ -87,16 +87,44 @@ public class SolrClientKit {
 	 * @param queryParam
 	 * @return
 	 */
-	public static SolrDocumentList query(String queryParam){
+	public static QueryResponse query(String queryParam, Integer count, Integer start, Boolean hl, String sortfield, String sort, String ...fields){
 		SolrClient client = getHttpSolrCientInstance();
 		SolrQuery query = new SolrQuery();
-		query.set("wt", "json");
+		//query.set("wt", "json");
+		if(hl != null && hl){
+			query.setHighlight(true);
+			query.addHighlightField("content");
+			query.setHighlightSimplePre("<em class='hl-key'>");
+			query.setHighlightSimplePost("</em>");
+		}
+		//设置需要返回的列
+		query.setFields(fields);
+		if(start == null){
+			start = -1;
+		}
+		if(count == null){
+			count = 0;
+		}
+		if(count > 0 & start == -1){
+			start = 0;
+		}
+		if(start >= 0){
+			query.setStart(start);
+			query.setRows(start + count);
+		}
+		if(sort != null && sort.length() > 0 && sortfield != null && sortfield.length() > 0){
+			ORDER order = ORDER.asc;
+			if(sort.equals("desc")){
+				order = ORDER.desc;
+			}
+			query.setSort(sort, order);
+		}
+		
 		query.setQuery(queryParam);
 		try {
 			QueryResponse resp = client.query(query);
-			SolrDocumentList docList = resp.getResults();
 			client.close();
-			return docList;
+			return resp;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

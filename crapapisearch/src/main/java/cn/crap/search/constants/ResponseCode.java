@@ -13,6 +13,7 @@ public class ResponseCode {
 	public static Integer PARAM_EMPTY = 1001;
 	public static Integer IDS_EMPTY = 1002;
 	public static Integer QUERY_ERROR = 1003;
+	public static Integer QUERY_CLIENT_ERROR = 1004;
 	static{
 		status.put(SUCCESS, "success");
 		status.put(ERROR, "error");
@@ -20,6 +21,7 @@ public class ResponseCode {
 		status.put(PARAM_EMPTY, "query can not be empty");
 		status.put(IDS_EMPTY, "delete index id can not be empty");
 		status.put(QUERY_ERROR, "query error");
+		status.put(QUERY_CLIENT_ERROR, "query client error");
 	}
 	
 	/**

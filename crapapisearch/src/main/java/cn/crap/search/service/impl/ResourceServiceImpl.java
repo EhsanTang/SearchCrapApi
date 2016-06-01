@@ -2,7 +2,8 @@ package cn.crap.search.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.solr.common.SolrDocumentList;
+import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import com.google.gson.reflect.TypeToken;
 @Service
 public class ResourceServiceImpl implements ResourceService{
 	static Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-	
+	static Logger logger = Logger.getLogger(ResourceServiceImpl.class);
 	public ResponseView add(String data) {
 		List<Map<String, Object>> datas = null;
 		try {
@@ -61,16 +62,27 @@ public class ResourceServiceImpl implements ResourceService{
 		return new ResponseView(ResponseCode.SUCCESS, "success update " + result + " index");
 	}
 
-	public ResponseView query(String param) {
+	public ResponseView query(String param, Integer count, Integer start, Boolean hl,String sortfield, String sort, String ...fields) {
 		if(StringUtils.isEmpty(param)){
 			return new ResponseView(ResponseCode.PARAM_EMPTY);
 		}
-		SolrDocumentList result = SolrClientKit.query(param);
-		if(result == null){
+		QueryResponse res = SolrClientKit.query(param, count, start, hl,sortfield, sort, fields);
+		if(res == null){
+			logger.debug("query error. query response is null.");
 			return new ResponseView(ResponseCode.QUERY_ERROR);
 		}
+		if(res.getStatus() != 0 ){
+			logger.debug("query client error. error code is " +  res.getStatus());
+			return new ResponseView(ResponseCode.QUERY_CLIENT_ERROR);
+		}
 		ResponseView rv = new ResponseView(ResponseCode.SUCCESS);
-		rv.put("result", result);
+		rv.put("response", res.getResults());
+		rv.put("start", res.getResults().getStart());
+		rv.put("elapsedtime", res.getElapsedTime());
+		rv.put("numfound", res.getResults().getNumFound());
+		if(hl != null && hl){
+			rv.put("highlighting", res.getHighlighting());
+		}
 		return rv;
 	}
 

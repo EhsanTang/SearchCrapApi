@@ -25,8 +25,8 @@ public interface ResourceService {
 	
 	/**
 	 * 
-	 * @param param
+	 * @param param 查询参数
 	 * @return
 	 */
-	public ResponseView  query(String param);
+	public ResponseView  query(String param, Integer count, Integer start, Boolean hl, String sortfield, String sort, String ...fields);
 }
