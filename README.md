@@ -117,7 +117,7 @@ api.password = api
       {
         "id": "002",
         "url": [
-          "http:/sina.com"
+          "http://yanxiaowei.com"
         ],
         "content": [
           "湖南的岳阳"
