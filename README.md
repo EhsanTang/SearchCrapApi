@@ -44,6 +44,9 @@ api.username = api
 api.password = api
 ```
 ##操作接口
+###接口授权
+此接口使用BasicAuth认证，账号密码在配置文件种自行修改
+
 ###新增索引
 **请求地址 /api/add**
 ```
