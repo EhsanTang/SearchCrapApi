@@ -52,7 +52,7 @@ api.password = api
   * @description data参数格式 [{"id":"1","url":"http://yanxiaowei.com","title":"this is title", "content":"this is the article   content"},{"id":"2","url":"http://yanshare.com","title":"this is the other title", "content":"this is the other article content"}]
   * @description data参数为json数组，要求在增加索引前，需要通过solr管理添加所有属性的schema,如 id url title content
   * @description 需要注意的是如果id重复，则会覆盖上一条信息
-/**
+ **/
 ```
 **返回结果** 
 ```
@@ -67,7 +67,7 @@ api.password = api
 /**
   * @param ids 索引数组 必须
   * @description 参数格式 ["1","2"]
-/**
+ **/
 ```
 **返回结果** 
 ```
@@ -84,7 +84,7 @@ api.password = api
   * data参数格式 [{"id":"1","url":"http://yanxiaowei.com","title":"this is title", "content":"this is the article content"},{"id":"2","url":"http://yanshare.com","title":"this is the other title", "content":"this is the other article content"}]
   * data参数为json数组，要求在增加索引前，需要通过solr管理添加所有属性的schema,如 id url title content
   * 更新索引的原理为先删除旧的索引，然后创建新索引
-**/
+ **/
 ```
 **返回结果**
 ```
